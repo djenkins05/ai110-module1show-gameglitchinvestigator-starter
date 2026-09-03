@@ -29,8 +29,9 @@ Document at least 3 bugs you found. Add rows as needed.
 ## 2. How did you use AI as a teammate?
 
 - Which AI tools did you use on this project (for example: ChatGPT, Gemini, Copilot)?
-For this project I Used 
+For this project I used ClaudeAI that is integrated as an extension in VSCode so that it can directly look at my code and make suggestion directly to the file. Where I only have to press a button to integrate whatever changes I came up with, while using Claude. Claude was the only AI that I used. 
 - Give one example of an AI suggestion that was correct (including what the AI suggested and how you verified the result).
+One example of an AI suggestion that was correct was when I used it to help fix the New game button bug, where the button seemed as if it didn't work since it didn't update things like the status.
 - Give one example of an AI suggestion that was incorrect or misleading (including what the AI suggested and how you verified the result).
 
 ---
