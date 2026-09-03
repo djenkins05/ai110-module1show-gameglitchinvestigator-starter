@@ -6,6 +6,8 @@ from logic_utils import check_guess
 
 APP_PATH = str(Path(__file__).resolve().parent.parent / "app.py")
 
+# FIX: These 3 tests compared the whole (outcome, message) tuple to a bare
+# string; now unpacked to match check_guess's real signature. Fixed in agent mode.
 def test_winning_guess():
     # If the secret is 50 and guess is 50, it should be a win
     outcome, _ = check_guess(50, 50)

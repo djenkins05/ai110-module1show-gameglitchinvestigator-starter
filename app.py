@@ -1,6 +1,8 @@
 import random
 import streamlit as st
 
+# FIX: Now importing get_range_for_difficulty, parse_guess, and update_score
+# from logic_utils.py instead of defining them here, using agent mode.
 from logic_utils import check_guess, get_range_for_difficulty, parse_guess, update_score
 
 st.set_page_config(page_title="Glitchy Guesser", page_icon="🎮")
@@ -45,6 +47,8 @@ if "history" not in st.session_state:
 
 st.subheader("Make a guess")
 
+# FIX: Range was hardcoded as "1 and 100" regardless of difficulty;
+# now uses low/high, found and fixed together in agent mode.
 st.info(
     f"Guess a number between {low} and {high}. "
     f"Attempts left: {attempt_limit - st.session_state.attempts}"
@@ -70,6 +74,9 @@ with col2:
 with col3:
     show_hint = st.checkbox("Show hint", value=True)
 
+# FIX: New Game previously left status as "won"/"lost" and kept the old
+# score/history, so it looked like the button did nothing; now resets
+# status, score, and history too. Fixed in agent mode.
 if new_game:
     st.session_state.attempts = 0
     st.session_state.secret = random.randint(low, high)
@@ -97,6 +104,9 @@ if submit:
     else:
         st.session_state.history.append(guess_int)
 
+        # FIX: Removed a branch that stringified the secret on every other
+        # attempt, forcing check_guess into a buggy string-comparison
+        # fallback that gave wrong hints. Diagnosed and fixed in agent mode.
         outcome, message = check_guess(guess_int, st.session_state.secret)
 
         if show_hint:

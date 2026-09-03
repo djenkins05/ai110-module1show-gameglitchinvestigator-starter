@@ -1,3 +1,4 @@
+# FIX: Refactored out of app.py into logic_utils.py with agent mode.
 def get_range_for_difficulty(difficulty: str):
     """Return (low, high) inclusive range for a given difficulty."""
     if difficulty == "Easy":
@@ -9,6 +10,7 @@ def get_range_for_difficulty(difficulty: str):
     return 1, 100
 
 
+# FIX: Refactored out of app.py into logic_utils.py with agent mode.
 def parse_guess(raw: str):
     """
     Parse user input into an int guess.
@@ -32,6 +34,8 @@ def parse_guess(raw: str):
     return True, value, None
 
 
+# FIX: Hints were swapped ("Too High" said "Go HIGHER" and vice versa);
+# corrected to match the actual outcome, fixed in agent mode.
 def check_guess(guess, secret):
     """
     Compare guess to secret and return (outcome, message).
@@ -55,6 +59,7 @@ def check_guess(guess, secret):
         return "Too Low", "📈 Go HIGHER!"
 
 
+# FIX: Refactored out of app.py into logic_utils.py with agent mode.
 def update_score(current_score: int, outcome: str, attempt_number: int):
     """Update score based on outcome and attempt number."""
     if outcome == "Win":
