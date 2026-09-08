@@ -29,10 +29,57 @@ Document at least 3 bugs you found. Add rows as needed.
 ## 2. How did you use AI as a teammate?
 
 - Which AI tools did you use on this project (for example: ChatGPT, Gemini, Copilot)?
+
 For this project I used ClaudeAI that is integrated as an extension in VSCode so that it can directly look at my code and make suggestion directly to the file. Where I only have to press a button to integrate whatever changes I came up with, while using Claude. Claude was the only AI that I used. 
+
 - Give one example of an AI suggestion that was correct (including what the AI suggested and how you verified the result).
-One example of an AI suggestion that was correct was when I used it to help fix the New game button bug, where the button seemed as if it didn't work since it didn't update things like the status.
+**What the AI suggested:** The AI identified that the button's handler 
+wasn't fully resetting game state. Specifically, it pointed out that 
+`status` was never being reset to `"playing"` after a win/loss, and that 
+`score`, `history`, and `attempts` were also being left over from the 
+previous game instead of being cleared. It suggested resetting all of 
+these values in the "New Game" handler.
+
+**Whether the suggestion was correct:** The suggestion was correct. Once 
+I implemented the fix, the button behaved as expected — starting a new 
+game fully reset the session state instead of leaving stale values behind.
+
+**How I verified the result:** I wrote two pytest tests targeting the two 
+specific failure modes the AI identified — one confirming that starting a 
+new game after a win/loss properly resets `status` back to `"playing"` 
+instead of re-showing the game-over message, and another confirming 
+that `score`, `history`, and `attempts` are all cleared when a new game 
+starts mid-game rather than carrying over from the previous one. Both 
+tests passed after applying the fix. I also manually tested the behavior 
+by playing a full game to completion, win and loss, in the app itself and 
+clicking "New Game" each time, confirming the status, score, history, and 
+attempts all reset correctly and the game was immediately playable again.
+
 - Give one example of an AI suggestion that was incorrect or misleading (including what the AI suggested and how you verified the result).
+**What the AI suggested:** After `check_guess()` was refactored to return 
+a tuple (`outcome, message`) instead of a single string, I asked the AI 
+to help update the old tests to match the new function signature. For 
+most of the tests (`test_winning_guess`, `test_guess_too_high`, 
+`test_guess_too_low`), it correctly suggested changing lines like 
+`result = check_guess(50, 50)` to `outcome, _ = check_guess(50, 50)`, 
+using `_` to discard the message since those tests only cared about the 
+outcome. It then tried to apply this same pattern to 
+`test_guess_too_high_hint_says_go_lower` and 
+`test_guess_too_low_hint_says_go_higher`, suggesting those be rewritten 
+the same way — unpacking the message into `_` and discarding it. 
+**Whether the suggestion was correct:** This part of the suggestion was 
+incorrect/misleading. Those two tests exist specifically to check the 
+*content* of the hint message (that it says "LOWER" instead of "HIGHER," 
+and vice versa). Discarding the message into `_` removed the exact value 
+the test was supposed to validate, so applying the AI's blanket fix 
+caused the test to break/error out instead of actually testing anything, 
+it was a case of the AI over-generalizing a pattern that worked for other 
+tests but didn't fit the intent of these two.
+**How I verified the result:** I ran the tests after applying the AI's 
+suggested change and got an error, which told me the fix wasn't right 
+for this case. I went back into the code and manually kept `message` 
+instead of discarding it (`outcome, message = check_guess(60, 50)`), 
+then reran the tests and then they passed and correctly caught the hint text.
 
 ---
 
